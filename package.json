@@ -1,0 +1,43 @@
+{
+  "name": "react-editable-fields",
+  "version": "1.0.0",
+  "description": "React components for inline-editing of forms",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run build-ts",
+    "build-ts": "rm -rf dist && tsc",
+    "test-spec": "mocha dist/**/*.spec.js -R spec --bail",
+    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- dist/**/*.spec.js -R spec --bail",
+    "test": "npm run build && npm run test-cov",
+    "prepublish": "typings install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacobdr/react-editable-fields.git"
+  },
+  "keywords": [
+    "react",
+    "form",
+    "editable",
+    "xeditable"
+  ],
+  "author": "Jacob Roberts <jacobdr@gmail.com>",
+  "license": "SEE LICENSE IN LICESNSE",
+  "bugs": {
+    "url": "https://github.com/jacobdr/react-editable-fields/issues"
+  },
+  "homepage": "https://github.com/jacobdr/react-editable-fields#readme",
+  "dependencies": {
+    "react": "^0.14.8",
+    "react-dom": "^0.14.8",
+    "source-map-support": "^0.4.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "enzyme": "^2.2.0",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.4.5",
+    "sinon": "^1.17.3",
+    "ts-node": "^0.7.1"
+  }
+}
