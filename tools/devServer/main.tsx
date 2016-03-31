@@ -7,7 +7,7 @@ class DebugComponent extends React.Component<any, any> {
         super(props);
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps:any){
         console.log("Debug component componentWillReceiveProps", {nextProps});
     }
 
@@ -15,7 +15,7 @@ class DebugComponent extends React.Component<any, any> {
         return (
             <div onClick={()=>{console.log("CLICKED", {this:this})}}>
                 <h3> Debug Content: </h3>
-                The current text value: {JSON.stringify(this.props.editableFieldInput)}
+                The current text value: {JSON.stringify(this.props && this.props.editableFieldInput && this.props.editableFieldInput.state)}
             </div>
         )
     }
@@ -23,14 +23,14 @@ class DebugComponent extends React.Component<any, any> {
 
 class Container extends React.Component<any, any> {
     public testGlobalReference = "testGlobalReference";
-    constructor(props){
+    constructor(props:any){
         super(props)
         this.state = {
             testGlobalReference:null,
         }
     }
 
-    updateOtherContainer = (incomingRef)=> {
+    updateOtherContainer = (incomingRef:any)=> {
         console.log("updateOtherContainer called", {incomingRef})
         this.setState({testGlobalReference:incomingRef})
     }
@@ -38,7 +38,7 @@ class Container extends React.Component<any, any> {
     render(){
         return (
             <div>
-                "Hello, world!"
+                "Hello, world! This works on file saves!"
                 <br />
                 <EditableField ref={this.updateOtherContainer} />
                 <DebugComponent

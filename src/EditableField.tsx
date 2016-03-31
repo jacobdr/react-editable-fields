@@ -50,18 +50,27 @@ export class EditableField extends React.Component<any, any> {
 
         return (
             <div>
-                <h3>Made it inside the render of EditableField </h3>
-                    <ButtonToolbar className='editable-buttons'>
+                <ButtonToolbar className='editable-buttons'>
                     <Input
                         type='text'
                         value={this.state.value}
                         placeholder='Empty'
                         className='input-sm'
                         onChange={this.handleChange}>
-                        <Button bsStyle='primary' className='btn-sm' onClick={this.save}><i className='glyphicon glyphicon-ok'></i></Button>
-                        <Button bsStyle='default' className='btn-sm' onClick={this.cancel}><i className='glyphicon glyphicon-remove'></i></Button>
-                        </Input>
-                    </ButtonToolbar>
+                    </Input>
+                    <Button
+                        bsStyle='primary'
+                        className='btn-sm'
+                        onClick={this.save}>
+                            <i className='glyphicon glyphicon-ok'></i>
+                    </Button>
+                    <Button
+                        bsStyle='default'
+                        className='btn-sm'
+                        onClick={this.cancel}>
+                            <i className='glyphicon glyphicon-remove'></i>
+                    </Button>
+                </ButtonToolbar>
             </div>
         );
     }
