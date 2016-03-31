@@ -35,12 +35,14 @@
     "source-map-support": "^0.4.0"
   },
   "devDependencies": {
+    "browserify": "^13.0.0",
     "chai": "^3.5.0",
     "enzyme": "^2.2.0",
     "istanbul": "^0.4.2",
     "jsdom": "^8.2.0",
     "mocha": "^2.4.5",
     "sinon": "^1.17.3",
-    "ts-node": "^0.7.1"
+    "ts-node": "^0.7.1",
+    "tsify": "^0.14.1"
   }
 }

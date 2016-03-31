@@ -11,6 +11,7 @@
     "react": "registry:dt/react#0.14.0+20160319053454",
     "react-bootstrap": "registry:dt/react-bootstrap#0.0.0+20160322135206",
     "react-dom": "registry:dt/react-dom#0.14.0+20160316155526",
+    "sinon": "registry:dt/sinon#1.16.0+20160317120654",
     "source-map-support": "registry:dt/source-map-support#0.2.10+20160316155526"
   }
 }

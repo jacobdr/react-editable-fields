@@ -1,0 +1,11 @@
+{
+    "compilerOptions":{
+        "jsx": "react"
+    },
+    "compileOnSave": false,
+    "buildOnSave": false,
+    "files": [
+        "main.tsx",
+        "../../typings/browser.d.ts"
+    ]
+}

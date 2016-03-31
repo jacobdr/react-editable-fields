@@ -1,0 +1,9 @@
+{
+  "version": "0.0.0",
+  "scripts": {
+    "build-cli": "browserify -p tsify main.tsx typings/tsd.d.ts > public/bundle.js",
+    "build-script": "node ./build.js > public/bundle.js",
+    "start-server": "http-server public -o -c-1",
+    "start": "npm run build-script && npm run start-server"
+  }
+}

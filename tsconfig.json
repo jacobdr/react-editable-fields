@@ -15,6 +15,7 @@
     "compileOnSave": false,
     "exclude": [
         "node_modules",
+        "examples",
         "typings/main",
         "typings/main.d.ts"
     ]
