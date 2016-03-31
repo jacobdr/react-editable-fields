@@ -6,9 +6,10 @@
   "scripts": {
     "build": "npm run build-ts",
     "build-ts": "rm -rf dist && tsc",
+    "test-watch": "tsc --watch & mocha --watch --reporter spec --require test/setupBrowser.js dist/**.js",
     "test-spec": "mocha dist/**/*.spec.js -R spec --bail",
-    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- dist/**/*.spec.js -R spec --bail",
-    "test": "npm run build && npm run test-cov",
+    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --debug --reporter spec --require test/setupBrowser.js --recursive dist/test",
+    "test": "npm run build && npm run --silent test-cov",
     "prepublish": "typings install && npm run build"
   },
   "repository": {
@@ -29,6 +30,7 @@
   "homepage": "https://github.com/jacobdr/react-editable-fields#readme",
   "dependencies": {
     "react": "^0.14.8",
+    "react-bootstrap": "^0.28.4",
     "react-dom": "^0.14.8",
     "source-map-support": "^0.4.0"
   },
@@ -36,6 +38,7 @@
     "chai": "^3.5.0",
     "enzyme": "^2.2.0",
     "istanbul": "^0.4.2",
+    "jsdom": "^8.2.0",
     "mocha": "^2.4.5",
     "sinon": "^1.17.3",
     "ts-node": "^0.7.1"
