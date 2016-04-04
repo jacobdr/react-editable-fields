@@ -36,9 +36,8 @@ class Container extends React.Component<any, any> {
     }
 
     render(){
-        return (
+        return ( <div>
             <div>
-                "Hello, world!"
                 <br />
                 <EditableField ref={this.updateOtherContainer} />
                 <DebugComponent
@@ -48,7 +47,17 @@ class Container extends React.Component<any, any> {
                     {"this.testGlobalReference": this.testGlobalReference})}}> Click test
                 </h4>
             </div>
-        )
+            <div>
+                <br />
+                <EditableField initialValue="initailzied string" ref={this.updateOtherContainer} />
+                <DebugComponent
+                    editableFieldInput={this.state.testGlobalReference}
+                />
+                <h4 onClick={(event)=>{console.log("Clicked h4",
+                    {"this.testGlobalReference": this.testGlobalReference})}}> Click test
+                </h4>
+            </div>
+        </div>)
     }
 }
 

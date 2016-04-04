@@ -36,11 +36,10 @@ class Container extends React.Component<any, any> {
     }
 
     render(){
-        return (
+        return ( <div>
             <div>
-                "Hello, world! This works on file saves!"
-                <br />
-                <EditableField ref={this.updateOtherContainer} />
+                <h1> First Example</h1>
+                <EditableField initialValue={false}  />
                 <DebugComponent
                     editableFieldInput={this.state.testGlobalReference}
                 />
@@ -48,7 +47,37 @@ class Container extends React.Component<any, any> {
                     {"this.testGlobalReference": this.testGlobalReference})}}> Click test
                 </h4>
             </div>
-        )
+            <div>
+                <h1> Second Example</h1>
+                <EditableField initialValue={"this is the preliminary variable"} />
+                <DebugComponent
+                    editableFieldInput={this.state.testGlobalReference}
+                />
+                <h4 onClick={(event)=>{console.log("Clicked h4",
+                    {"this.testGlobalReference": this.testGlobalReference})}}> Click test
+                </h4>
+            </div>
+            <div>
+                <h1> Third Example</h1>
+                <EditableField initialValue={new Date()} />
+                <DebugComponent
+                    editableFieldInput={this.state.testGlobalReference}
+                />
+                <h4 onClick={(event)=>{console.log("Clicked h4",
+                    {"this.testGlobalReference": this.testGlobalReference})}}> Click test
+                </h4>
+            </div>
+            <div>
+                <h1> Fifth Example -- Has to be another date </h1>
+                <EditableField initialValue={new Date()} requireSameTypeOnSave={true} />
+                <DebugComponent
+                    editableFieldInput={this.state.testGlobalReference}
+                />
+                <h4 onClick={(event)=>{console.log("Clicked h4",
+                    {"this.testGlobalReference": this.testGlobalReference})}}> Click test
+                </h4>
+            </div>
+        </div>)
     }
 }
 
