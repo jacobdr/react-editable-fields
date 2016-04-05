@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "React components for inline-editing of forms",
   "main": "./dist/src/index.js",
+  "typings": "./dist/src/index.d.ts",
   "scripts": {
     "build": "npm run build-ts",
     "build-ts": "rm -rf dist/* && tsc --pretty",
