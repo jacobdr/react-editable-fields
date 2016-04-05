@@ -5,7 +5,7 @@
   "main": "dist/src/index.js",
   "scripts": {
     "build": "npm run build-ts",
-    "build-ts": "rm -rf dist/* && tsc --listFiles",
+    "build-ts": "rm -rf dist/* && tsc --pretty",
     "test-watch": "tsc --watch & mocha --watch --reporter spec --require test/setupBrowser.js dist/**.js",
     "test-spec": "mocha dist/**/*.spec.js -R spec --bail",
     "test-raw": "mocha --debug --reporter spec --require test/setupBrowser.js --recursive dist/test",

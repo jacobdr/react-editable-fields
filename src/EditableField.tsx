@@ -5,9 +5,8 @@ import {getProperty} from './Utils'
 import { Button, OverlayTrigger, Overlay, Col, Row,
     Popover, Input, ButtonToolbar } from 'react-bootstrap';
 
-type EditableFieldPropTypes = {initialValue:any, saveHandler?:Function, requireSameTypeOnSave?:boolean};
-type EditableFieldStateType = {value?:any, textEnteredSinceFocus?:boolean, textEnteredNotSaved?:boolean};
-
+export type EditableFieldPropTypes = {initialValue:any, saveHandler?:Function, requireSameTypeOnSave?:boolean};
+export type EditableFieldStateType = {value?:any, textEnteredSinceFocus?:boolean, textEnteredNotSaved?:boolean};
 export class EditableField extends React.Component<EditableFieldPropTypes, EditableFieldStateType> {
     static displayName = 'EditableField';
     static propTypes = {
@@ -36,7 +35,7 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
     }
 
     componentDidMount(){}
-    
+
     handleChangeToInput = (event:any) => {
         // console.log("onChange event",{event, value: event.target.value});
         this.setState({
