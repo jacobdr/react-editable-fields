@@ -7,6 +7,7 @@ import { Button, OverlayTrigger, Overlay, Col, Row,
 
 type EditableFieldPropTypes = {initialValue:any, saveHandler?:Function, requireSameTypeOnSave?:boolean};
 type EditableFieldStateType = {value?:any, textEnteredSinceFocus?:boolean, textEnteredNotSaved?:boolean};
+
 export class EditableField extends React.Component<EditableFieldPropTypes, EditableFieldStateType> {
     static displayName = 'EditableField';
     static propTypes = {
@@ -34,6 +35,8 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
         }
     }
 
+    componentDidMount(){}
+    
     handleChangeToInput = (event:any) => {
         // console.log("onChange event",{event, value: event.target.value});
         this.setState({
@@ -126,5 +129,4 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
             </div>
         );
     }
-
 }
