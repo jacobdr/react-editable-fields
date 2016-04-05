@@ -31,8 +31,8 @@
   },
   "homepage": "https://github.com/jacobdr/react-editable-fields#readme",
   "peerDependencies": {
-    "react": "^0.14.8",
-    "react-dom": "^0.14.8"
+    "react": "0.14.x",
+    "react-dom": "0.14.x"
   },
   "dependencies": {
     "react-bootstrap": "^0.28.4",
