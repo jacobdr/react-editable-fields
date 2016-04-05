@@ -16,6 +16,7 @@
     "buildOnSave": false,
     "compileOnSave": false,
     "exclude": [
+        "dist",
         "node_modules",
         "examples",
         "typings/main",

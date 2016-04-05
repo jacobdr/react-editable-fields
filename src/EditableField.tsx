@@ -1,18 +1,33 @@
 import 'source-map-support/register';
 import * as _ from 'underscore';
+import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import {getProperty} from './Utils'
 import { Button, OverlayTrigger, Overlay, Col, Row,
-    Popover, Input, ButtonToolbar } from 'react-bootstrap';
+    Popover, Input, ButtonToolbar, Tooltip } from 'react-bootstrap';
 
-export type EditableFieldPropTypes = {initialValue:any, saveHandler?:Function, requireSameTypeOnSave?:boolean};
-export type EditableFieldStateType = {value?:any, textEnteredSinceFocus?:boolean, textEnteredNotSaved?:boolean};
+export type EditableFieldPropTypes = {
+    initialValue:any,
+    saveHandler?:Function,
+    requireSameTypeOnSave?:boolean
+};
+export type EditableFieldStateType = {
+    value?:any,
+    textEnteredSinceFocus?:boolean,
+    textEnteredNotSaved?:boolean,
+    showUserInputBox?:boolean,
+};
+
 export class EditableField extends React.Component<EditableFieldPropTypes, EditableFieldStateType> {
     static displayName = 'EditableField';
     static propTypes = {
         initialValue: React.PropTypes.any.isRequired,
         saveHandler:React.PropTypes.func,
         requireSameTypeOnSave: React.PropTypes.bool,
+    }
+    refs: {
+        [key:string]:any;
+        "target": any;
     }
 
     constructor(props: any) {
@@ -21,6 +36,7 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
             value: null,
             textEnteredSinceFocus: false,
             textEnteredNotSaved: false,
+            showUserInputBox: false,
         };
         switch (typeof this.props.initialValue){
             case 'string':
@@ -35,19 +51,33 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
     }
 
     componentDidMount(){}
+    submit(event: any) {
+        event.preventDefault();
+        this.save(event);
+    }
 
     handleChangeToInput = (event:any) => {
-        // console.log("onChange event",{event, value: event.target.value});
-        this.setState({
-            value: event.target.value,
-            textEnteredSinceFocus:true,
-            textEnteredNotSaved: true,
-        });
+        switch (typeof event.target.value) {
+            case 'string':
+                this.setState({
+                    value: event.target.value.trim(),
+                    textEnteredSinceFocus:true,
+                    textEnteredNotSaved: true,
+                });
+            default:
+                this.setState({
+                    value: event.target.value,
+                    textEnteredSinceFocus:true,
+                    textEnteredNotSaved: true,
+                });
+        }
     }
 
     handleInputBlur = (event:React.FocusEvent) => {
         this.setState({
             textEnteredSinceFocus: false,
+            showUserInputBox: !this.state.showUserInputBox,
+            value: this.state.value.trim && this.state.value.trim() || this.state.value,
         });
     }
 
@@ -81,12 +111,19 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
         })
     }
 
-    submit(event: any) {
-        event.preventDefault();
-        this.save(event);
+    showUserInputBox = () => {
+        this.setState({showUserInputBox:true})
+    }
+
+    shouldShowDataChangeWarning = ():boolean=>{
+        if (this.state.textEnteredNotSaved && (this.state.value !== this.props.initialValue)){
+            return true
+        }
+        else false
     }
 
     render() {
+
         let PopupSaveButtons = (<Popover id="saveCancelButtonPopover">
             <ButtonToolbar className='editable-buttons'>
                 <Button
@@ -104,27 +141,61 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
                 </ButtonToolbar>
             </Popover>);
 
+        let dataNotSavedWarning = (
+            <Tooltip id={'dataNotSavedWarning'} style={{display:'table'}} className={"small"}>
+                Warning: You did not save or cancel your field update
+            </Tooltip>);
+
+        let userInputTextBox = (
+            <Input
+                type='text'
+                placeholder={'Empty'}
+                value={this.state.value}
+                className='input-sm'
+                onChange={this.handleChangeToInput}
+                onBlur={this.handleInputBlur}
+            />
+        );
+
+        let linkToInputFieldEntry = (
+            <div>
+                <a style={{borderBottom: "1px dotted #000"}}> {this.state.value || '(No data entered yet)'} </a>
+                <Overlay
+                    placement='right'
+                    show={this.shouldShowDataChangeWarning()}
+                    container={this.refs.target}
+                    target={() => ReactDOM.findDOMNode(this.refs.target)}>
+                    {dataNotSavedWarning}
+                </Overlay>
+            </div>
+        );
+
+        let textBoxWarning = (
+            <div style={{color:'red', marginTop:"-5px"}} className={"small"}>
+                Update has not been saved yet
+            </div>
+        )
+
         return (
             <div>
                 <Row>
-                    <Col xs={6}>
-                        <OverlayTrigger placement="right" overlay={PopupSaveButtons} trigger="focus">
-                            <div>
-                                <Input
-                                    type='text'
-                                    value={this.state.value}
-                                    placeholder='Empty'
-                                    className='input-sm'
-                                    onChange={this.handleChangeToInput}
-                                    onBlur={this.handleInputBlur}
-                                />
-                                { (()=>{ if (this.state.textEnteredNotSaved){
-                                    return (<div style={{color:'red', marginTop:"-10px"}}> Update has not been saved yet </div>)
+                    <Col xs={4}>
+                        <OverlayTrigger placement="right" overlay={PopupSaveButtons} trigger="focus" ref='target'>
+                            <div id="test-id" onClick={this.showUserInputBox}>
+                                { (() => {
+                                    switch(this.state.showUserInputBox){
+                                        case false:  return linkToInputFieldEntry
+                                        case true: return userInputTextBox
+                                    }
+                                })()}
+                                { (()=>{ if (this.shouldShowDataChangeWarning() && this.state.showUserInputBox){
+                                    return textBoxWarning
                                 }})() }
                             </div>
                         </OverlayTrigger>
                     </Col>
                 </Row>
+
             </div>
         );
     }

@@ -9,6 +9,7 @@ export declare type EditableFieldStateType = {
     value?: any;
     textEnteredSinceFocus?: boolean;
     textEnteredNotSaved?: boolean;
+    showUserInputBox?: boolean;
 };
 export declare class EditableField extends React.Component<EditableFieldPropTypes, EditableFieldStateType> {
     static displayName: string;
@@ -17,13 +18,19 @@ export declare class EditableField extends React.Component<EditableFieldPropType
         saveHandler: React.Requireable<any>;
         requireSameTypeOnSave: React.Requireable<any>;
     };
+    refs: {
+        [key: string]: any;
+        "target": any;
+    };
     constructor(props: any);
     componentDidMount(): void;
+    submit(event: any): void;
     handleChangeToInput: (event: any) => void;
     handleInputBlur: (event: React.FocusEvent) => void;
     saveHander: Function;
     save: (event: React.SyntheticEvent) => void;
     cancel: (event: React.SyntheticEvent) => void;
-    submit(event: any): void;
+    showUserInputBox: () => void;
+    shouldShowDataChangeWarning: () => boolean;
     render(): JSX.Element;
 }
