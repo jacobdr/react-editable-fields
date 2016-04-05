@@ -39,7 +39,7 @@ class Container extends React.Component<any, any> {
         return ( <div>
             <div>
                 <h1> First Example</h1>
-                <EditableField initialValue={false}  />
+                <EditableField initialValue={false}  saveHandler={(e:any)=>console.log("Saved handler called: ", e)}/>
                 <DebugComponent
                     editableFieldInput={this.state.testGlobalReference}
                 />
@@ -49,7 +49,9 @@ class Container extends React.Component<any, any> {
             </div>
             <div>
                 <h1> Second Example</h1>
-                <EditableField initialValue={"this is the preliminary variable"} />
+                <EditableField
+                    initialValue={"this is the preliminary variable"}
+                    saveHandler={(e:any)=>console.log("Saved handler called: ", e)}/>
                 <DebugComponent
                     editableFieldInput={this.state.testGlobalReference}
                 />
@@ -59,7 +61,10 @@ class Container extends React.Component<any, any> {
             </div>
             <div>
                 <h1> Third Example</h1>
-                <EditableField initialValue={new Date()} />
+                <EditableField
+                    initialValue={new Date()}
+                    saveHandler={(e:any)=>console.log("Saved handler called: ", e)}
+                />
                 <DebugComponent
                     editableFieldInput={this.state.testGlobalReference}
                 />
@@ -69,7 +74,11 @@ class Container extends React.Component<any, any> {
             </div>
             <div>
                 <h1> Fifth Example -- Has to be another date </h1>
-                <EditableField initialValue={new Date()} requireSameTypeOnSave={true} />
+                <EditableField
+                    initialValue={new Date()}
+                    requireSameTypeOnSave={true}
+                    saveHandler={(e:any)=>console.log("Saved handler called: ", e)}
+                />
                 <DebugComponent
                     editableFieldInput={this.state.testGlobalReference}
                 />

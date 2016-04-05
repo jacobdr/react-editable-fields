@@ -2,7 +2,7 @@ import 'source-map-support/register';
 import * as React from 'react';
 export declare type EditableFieldPropTypes = {
     initialValue: any;
-    saveHandler?: Function;
+    saveHandler: Function;
     requireSameTypeOnSave?: boolean;
 };
 export declare type EditableFieldStateType = {
@@ -27,7 +27,6 @@ export declare class EditableField extends React.Component<EditableFieldPropType
     submit(event: any): void;
     handleChangeToInput: (event: any) => void;
     handleInputBlur: (event: React.FocusEvent) => void;
-    saveHander: Function;
     save: (event: React.SyntheticEvent) => void;
     cancel: (event: React.SyntheticEvent) => void;
     showUserInputBox: () => void;

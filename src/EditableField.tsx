@@ -8,7 +8,7 @@ import { Button, OverlayTrigger, Overlay, Col, Row,
 
 export type EditableFieldPropTypes = {
     initialValue:any,
-    saveHandler?:Function,
+    saveHandler:Function,
     requireSameTypeOnSave?:boolean
 };
 export type EditableFieldStateType = {
@@ -81,21 +81,18 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
         });
     }
 
-    saveHander = this.props.saveHandler || ((value:any) => console.log("Save handler called with: ", value));
-
     save = (event:React.SyntheticEvent) => {
-        let stateToSave = this.state.value;
         this.setState({
-            textEnteredNotSaved: false
+            textEnteredNotSaved: false,
         });
 
         if (!this.props.requireSameTypeOnSave) {
             this.setState({value:this.state.value})
-            this.saveHander(this.state.value);
+            this.props.saveHandler(this.state.value);
         }
         else if (typeof this.props.initialValue === typeof(this.state.value)){
             this.setState({value:this.state.value})
-            this.saveHander(this.state.value);
+            this.props.saveHandler(this.state.value);
         }
         else {
             this.setState({value:this.props.initialValue})
@@ -103,8 +100,10 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
     }
 
     cancel = (event: React.SyntheticEvent) => {
-        console.log('Cancel button called', event);
         event.preventDefault();
+        event.stopPropagation();
+        console.log("The instance cancel method was called");
+        console.log('Cancel button called', event);
         this.setState({
             value:this.props.initialValue,
             textEnteredNotSaved: false,
@@ -112,6 +111,7 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
     }
 
     showUserInputBox = () => {
+        console.log("showUserInputBox called");
         this.setState({showUserInputBox:true})
     }
 
@@ -123,6 +123,26 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
     }
 
     render() {
+        let linkToInputFieldEntry = (
+            <div>
+                <a style={{borderBottom: "1px dotted #000"}} ref='target'> {this.state.value || '(No data entered yet)'} </a>
+                <Overlay
+                    placement='bottom'
+                    show={this.shouldShowDataChangeWarning()}
+                    container={this.refs.target}
+                    target={() => ReactDOM.findDOMNode(this.refs.target)}>
+                    <Tooltip id={'dataNotSavedWarning'} style={{display:'table'}} className={"small"}>
+                        Warning: You did not save or cancel your field update
+                    </Tooltip>
+                </Overlay>
+            </div>
+        );
+
+        let textBoxWarning = (
+            <div style={{color:'red', marginTop:"-5px"}} className={"small"}>
+                Update has not been saved yet
+            </div>
+        );
 
         let PopupSaveButtons = (<Popover id="saveCancelButtonPopover">
             <ButtonToolbar className='editable-buttons'>
@@ -141,11 +161,6 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
                 </ButtonToolbar>
             </Popover>);
 
-        let dataNotSavedWarning = (
-            <Tooltip id={'dataNotSavedWarning'} style={{display:'table'}} className={"small"}>
-                Warning: You did not save or cancel your field update
-            </Tooltip>);
-
         let userInputTextBox = (
             <Input
                 type='text'
@@ -157,40 +172,24 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
             />
         );
 
-        let linkToInputFieldEntry = (
-            <div>
-                <a style={{borderBottom: "1px dotted #000"}}> {this.state.value || '(No data entered yet)'} </a>
-                <Overlay
-                    placement='right'
-                    show={this.shouldShowDataChangeWarning()}
-                    container={this.refs.target}
-                    target={() => ReactDOM.findDOMNode(this.refs.target)}>
-                    {dataNotSavedWarning}
-                </Overlay>
-            </div>
-        );
-
-        let textBoxWarning = (
-            <div style={{color:'red', marginTop:"-5px"}} className={"small"}>
-                Update has not been saved yet
-            </div>
-        )
-
         return (
             <div>
                 <Row>
                     <Col xs={4}>
-                        <OverlayTrigger placement="right" overlay={PopupSaveButtons} trigger="focus" ref='target'>
+                        <OverlayTrigger trigger="focus" placement="right" overlay={PopupSaveButtons}>
                             <div id="test-id" onClick={this.showUserInputBox}>
                                 { (() => {
                                     switch(this.state.showUserInputBox){
-                                        case false:  return linkToInputFieldEntry
-                                        case true: return userInputTextBox
+                                        case false: return linkToInputFieldEntry
+                                        case true:  return userInputTextBox
                                     }
                                 })()}
-                                { (()=>{ if (this.shouldShowDataChangeWarning() && this.state.showUserInputBox){
-                                    return textBoxWarning
-                                }})() }
+                                { (()=>{
+                                    switch (this.shouldShowDataChangeWarning() && this.state.showUserInputBox){
+                                        case true: return textBoxWarning
+                                        default: return null
+                                    }
+                                })()}
                             </div>
                         </OverlayTrigger>
                     </Col>
