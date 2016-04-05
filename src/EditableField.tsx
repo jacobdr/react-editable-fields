@@ -10,7 +10,7 @@ type EditableFieldStateType = {value:any};
 export class EditableField extends React.Component<EditableFieldPropTypes, EditableFieldStateType> {
     static displayName = 'EditableField';
     static propTypes = {
-        initialValue: React.PropTypes.any,
+        initialValue: React.PropTypes.any.isRequired,
         saveHandler:React.PropTypes.func,
         requireSameTypeOnSave: React.PropTypes.bool,
     }
@@ -28,13 +28,10 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
                     value: getProperty('initialValue.toString', this.props) && this.props.initialValue.toString() || '',
                 });
         }
-        console.log("State is: ", this.state);
     }
 
-
-
     handleChangeToInput = (event: any) => {
-        console.log("onChagne event",{event, value: event.target.value});
+        // console.log("onChange event",{event, value: event.target.value});
         this.setState({ value: event.target.value });
     }
 
@@ -42,9 +39,8 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
 
     saveHander = this.props.saveHandler || ((value:any) => console.log("Save handler called with: ", value));
 
-    save = () => {
+    save = (event:React.SyntheticEvent) => {
         let stateToSave = this.state.value;
-
         if (!this.props.requireSameTypeOnSave) {
             this.setState({value:this.state.value})
             this.saveHander(this.state.value);
@@ -58,17 +54,19 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
         }
     }
 
-    cancel = () => {
+    cancel = (event: React.SyntheticEvent) => {
+        console.log('Cancel button called', event);
+        event.preventDefault();
         this.setState({value:this.props.initialValue})
     }
 
     submit(event: any) {
         event.preventDefault();
-        this.save();
+        this.save(event);
     }
 
     render() {
-        let PopupSaveButtons = (<Popover id="saveCancelButtonPopover">
+        let PopupSaveButtons = (<Popover id="saveCancelButtonPopover" onBlur={(e)=>console.log("BLURRED Popover", e)}>
             <ButtonToolbar className='editable-buttons'>
                 <Button
                     bsStyle='primary'
@@ -95,8 +93,9 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
                                 value={this.state.value}
                                 placeholder='Empty'
                                 className='input-sm'
-                                onChange={this.handleChangeToInput}>
-                            </Input>
+                                onChange={this.handleChangeToInput}
+                                onBlur={(e)=>console.log("BLURRED INPUT", e)}
+                            />
                         </OverlayTrigger>
                     </Col>
                 </Row>

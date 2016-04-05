@@ -8,6 +8,7 @@
     "build-ts": "rm -rf dist && tsc",
     "test-watch": "tsc --watch & mocha --watch --reporter spec --require test/setupBrowser.js dist/**.js",
     "test-spec": "mocha dist/**/*.spec.js -R spec --bail",
+    "test-raw": "mocha --debug --reporter spec --require test/setupBrowser.js --recursive dist/test",
     "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --debug --reporter spec --require test/setupBrowser.js --recursive dist/test",
     "test": "npm run build && npm run --silent test-cov",
     "prepublish": "typings install && npm run build",
@@ -29,8 +30,10 @@
     "url": "https://github.com/jacobdr/react-editable-fields/issues"
   },
   "homepage": "https://github.com/jacobdr/react-editable-fields#readme",
+  "peerDependencies": {
+    "react": "^0.14.8"
+  },
   "dependencies": {
-    "react": "^0.14.8",
     "react-bootstrap": "^0.28.4",
     "react-dom": "^0.14.8",
     "source-map-support": "^0.4.0",
@@ -44,6 +47,7 @@
     "jsdom": "^8.2.0",
     "live-server": "^0.9.2",
     "mocha": "^2.4.5",
+    "react-addons-test-utils": "^0.14.8",
     "sinon": "^1.17.3",
     "ts-node": "^0.7.1",
     "tsify": "^0.14.1"

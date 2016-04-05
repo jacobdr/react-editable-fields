@@ -9,6 +9,7 @@
     "mocha": "registry:dt/mocha#2.2.5+20160317120654",
     "node": "github:borisyankov/DefinitelyTyped/node/node.d.ts#b37afda34daa6186c3f143609555fcd6d70b249f",
     "react": "registry:dt/react#0.14.0+20160319053454",
+    "react-addons-test-utils": "registry:dt/react-addons-test-utils#0.14.0+20160316155526",
     "react-bootstrap": "registry:dt/react-bootstrap#0.0.0+20160322135206",
     "react-dom": "registry:dt/react-dom#0.14.0+20160316155526",
     "sinon": "registry:dt/sinon#1.16.0+20160317120654",
