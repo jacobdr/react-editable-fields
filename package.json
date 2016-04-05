@@ -2,7 +2,7 @@
   "name": "react-editable-fields",
   "version": "1.0.0",
   "description": "React components for inline-editing of forms",
-  "main": "dist/src/index.js",
+  "main": "./dist/src/index.js",
   "scripts": {
     "build": "npm run build-ts",
     "build-ts": "rm -rf dist/* && tsc --pretty",
