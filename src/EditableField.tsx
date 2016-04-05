@@ -6,7 +6,7 @@ import { Button, OverlayTrigger, Overlay, Col, Row,
     Popover, Input, ButtonToolbar } from 'react-bootstrap';
 
 type EditableFieldPropTypes = {initialValue:any, saveHandler?:Function, requireSameTypeOnSave?:boolean};
-type EditableFieldStateType = {value:any};
+type EditableFieldStateType = {value?:any, textEnteredSinceFocus?:boolean, textEnteredNotSaved?:boolean};
 export class EditableField extends React.Component<EditableFieldPropTypes, EditableFieldStateType> {
     static displayName = 'EditableField';
     static propTypes = {
@@ -17,7 +17,11 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
 
     constructor(props: any) {
         super(props);
-        this.state = {value:null};
+        this.state = {
+            value: null,
+            textEnteredSinceFocus: false,
+            textEnteredNotSaved: false,
+        };
         switch (typeof this.props.initialValue){
             case 'string':
                 this.state = _.extend(this.state, {
@@ -30,17 +34,29 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
         }
     }
 
-    handleChangeToInput = (event: any) => {
+    handleChangeToInput = (event:any) => {
         // console.log("onChange event",{event, value: event.target.value});
-        this.setState({ value: event.target.value });
+        this.setState({
+            value: event.target.value,
+            textEnteredSinceFocus:true,
+            textEnteredNotSaved: true,
+        });
     }
 
-    componentDidMount() {}
+    handleInputBlur = (event:React.FocusEvent) => {
+        this.setState({
+            textEnteredSinceFocus: false,
+        });
+    }
 
     saveHander = this.props.saveHandler || ((value:any) => console.log("Save handler called with: ", value));
 
     save = (event:React.SyntheticEvent) => {
         let stateToSave = this.state.value;
+        this.setState({
+            textEnteredNotSaved: false
+        });
+
         if (!this.props.requireSameTypeOnSave) {
             this.setState({value:this.state.value})
             this.saveHander(this.state.value);
@@ -57,7 +73,10 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
     cancel = (event: React.SyntheticEvent) => {
         console.log('Cancel button called', event);
         event.preventDefault();
-        this.setState({value:this.props.initialValue})
+        this.setState({
+            value:this.props.initialValue,
+            textEnteredNotSaved: false,
+        })
     }
 
     submit(event: any) {
@@ -66,7 +85,7 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
     }
 
     render() {
-        let PopupSaveButtons = (<Popover id="saveCancelButtonPopover" onBlur={(e)=>console.log("BLURRED Popover", e)}>
+        let PopupSaveButtons = (<Popover id="saveCancelButtonPopover">
             <ButtonToolbar className='editable-buttons'>
                 <Button
                     bsStyle='primary'
@@ -88,14 +107,19 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
                 <Row>
                     <Col xs={6}>
                         <OverlayTrigger placement="right" overlay={PopupSaveButtons} trigger="focus">
-                            <Input
-                                type='text'
-                                value={this.state.value}
-                                placeholder='Empty'
-                                className='input-sm'
-                                onChange={this.handleChangeToInput}
-                                onBlur={(e)=>console.log("BLURRED INPUT", e)}
-                            />
+                            <div>
+                                <Input
+                                    type='text'
+                                    value={this.state.value}
+                                    placeholder='Empty'
+                                    className='input-sm'
+                                    onChange={this.handleChangeToInput}
+                                    onBlur={this.handleInputBlur}
+                                />
+                                { (()=>{ if (this.state.textEnteredNotSaved){
+                                    return (<div style={{color:'red', marginTop:"-10px"}}> Update has not been saved yet </div>)
+                                }})() }
+                            </div>
                         </OverlayTrigger>
                     </Col>
                 </Row>
