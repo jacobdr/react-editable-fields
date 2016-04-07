@@ -38,6 +38,7 @@
     "react-dom": "0.14.x"
   },
   "dependencies": {
+    "bootstrap": "file:styles/bootstrap",
     "react-bootstrap": "^0.28.4",
     "source-map-support": "^0.4.0",
     "underscore": "^1.8.3"
