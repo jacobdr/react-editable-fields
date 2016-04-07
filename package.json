@@ -15,7 +15,7 @@
     "test": "npm run build && npm run --silent test-cov",
     "prepublish": "typings install && npm run build",
     "devServer": "npm run build-background-watch & beefy --live --index ./tools/devServer/public/index.html dist/tools/devServer/main.js:bundle.js",
-    "storybook": "start-storybook -p 9001"
+    "storybook": "start-storybook -p 9001 -s ./styles/bootstrap/dist"
   },
   "repository": {
     "type": "git",
@@ -55,7 +55,9 @@
     "mocha": "^2.4.5",
     "npm": "^3.8.5",
     "raw-loader": "^0.5.1",
+    "react": "^0.14.8",
     "react-addons-test-utils": "^0.14.8",
+    "react-dom": "^0.14.8",
     "sinon": "^1.17.3",
     "style-loader": "^0.13.1",
     "ts-loader": "^0.8.1",
