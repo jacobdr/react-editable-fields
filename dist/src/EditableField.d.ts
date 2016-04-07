@@ -20,7 +20,8 @@ export declare class EditableField extends React.Component<EditableFieldPropType
     };
     refs: {
         [key: string]: any;
-        "target": any;
+        target: any;
+        userInputElement: any;
     };
     constructor(props: any);
     componentDidMount(): void;

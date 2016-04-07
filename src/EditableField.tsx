@@ -27,7 +27,8 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
     }
     refs: {
         [key:string]:any;
-        "target": any;
+        target: any;
+        userInputElement: any
     }
 
     constructor(props: any) {
@@ -50,7 +51,9 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
         }
     }
 
+
     componentDidMount(){}
+
     submit(event: any) {
         event.preventDefault();
         this.save(event);
@@ -100,10 +103,6 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
     }
 
     cancel = (event: React.SyntheticEvent) => {
-        event.preventDefault();
-        event.stopPropagation();
-        console.log("The instance cancel method was called");
-        console.log('Cancel button called', event);
         this.setState({
             value:this.props.initialValue,
             textEnteredNotSaved: false,
@@ -125,7 +124,11 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
     render() {
         let linkToInputFieldEntry = (
             <div>
-                <a style={{borderBottom: "1px dotted #000"}} ref='target'> {this.state.value || '(No data entered yet)'} </a>
+                <a
+                    style={{borderBottom: "1px dotted #000"}}
+                    ref='target'>
+                        {this.state.value || '(No data entered yet)'}
+                </a>
                 <Overlay
                     placement='bottom'
                     show={this.shouldShowDataChangeWarning()}
@@ -163,14 +166,32 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
 
         let userInputTextBox = (
             <Input
+                ref={(c:any) => {c && c.getInputDOMNode && c.getInputDOMNode().focus()}}
                 type='text'
                 placeholder={'Empty'}
                 value={this.state.value}
                 className='input-sm'
                 onChange={this.handleChangeToInput}
                 onBlur={this.handleInputBlur}
+                help="Validation is based on string length."
+                bsStyle={"warning"}
             />
         );
+
+        let warningTextBox =  (()=>{
+            switch (this.shouldShowDataChangeWarning() && this.state.showUserInputBox){
+                case true: return textBoxWarning
+                default: return null
+            }
+        })();
+
+        let userDataAndInput = (() => {
+            switch(this.state.showUserInputBox){
+                case false: return linkToInputFieldEntry
+                case true:  return userInputTextBox
+                default: return null
+            }
+        })();
 
         return (
             <div>
@@ -178,18 +199,8 @@ export class EditableField extends React.Component<EditableFieldPropTypes, Edita
                     <Col xs={4}>
                         <OverlayTrigger trigger="focus" placement="right" overlay={PopupSaveButtons}>
                             <div id="test-id" onClick={this.showUserInputBox}>
-                                { (() => {
-                                    switch(this.state.showUserInputBox){
-                                        case false: return linkToInputFieldEntry
-                                        case true:  return userInputTextBox
-                                    }
-                                })()}
-                                { (()=>{
-                                    switch (this.shouldShowDataChangeWarning() && this.state.showUserInputBox){
-                                        case true: return textBoxWarning
-                                        default: return null
-                                    }
-                                })()}
+                                {userDataAndInput}
+                                {warningTextBox}
                             </div>
                         </OverlayTrigger>
                     </Col>

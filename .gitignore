@@ -34,7 +34,7 @@ node_modules
 
 # Non-standard Github additions
 bower_components/
-# dist/
+#dist/
 # typings/
 
 
