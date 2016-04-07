@@ -129,17 +129,33 @@ export class EditableInlineField extends React.Component<EditableFieldPropTypes,
             </ButtonToolbar>
         );
 
-        let linkToInputFieldEntry = (
-            <div>
+        let pencilEditButton = (
+            <ButtonGroup>
                 <Button
-                    ref='anchorLinkInputGateway'
-                    style={{ borderBottom: "1px dotted #000" }}
-                    bsStyle="link"
+                    bsStyle='default'
+                    className='btn'
                     onClick={()=>{this.setState({inputCurrentlyVisible:true})}}
                 >
-                    {this.props.initialValue}
+                    <i block className='glyphicon glyphicon-pencil'></i>
                 </Button>
+            </ButtonGroup>
+        );
+
+        let linkToInputFieldEntry = (
+            <div>
+                {this.props.initialValue}
+                <a onClick={()=>{this.setState({inputCurrentlyVisible:true})}}>
+                    <i style={{paddingLeft:"1em"}} block className='glyphicon glyphicon-pencil'></i>
+                </a>
             </div>
+            // <ButtonToolbar>
+            //     <ButtonGroup>
+            //         <Button bsStyle="link">
+            //
+            //         </Button>
+            //     </ButtonGroup>
+            //
+            // </ButtonToolbar>
         );
 
         return (
