@@ -5,15 +5,15 @@
   "main": "./dist/src/index.js",
   "typings": "./dist/src/index.d.ts",
   "scripts": {
-    "build": "npm run build-ts",
+    "build": "echo already built",
     "build-ts": "rm -rf dist/* && tsc --pretty",
     "build-background-watch": "tsc --watch --pretty",
     "test-watch": "npm run build-background-watch & mocha --watch --reporter spec --require test/setupBrowser.js dist/**.js",
     "test-spec": "mocha dist/**/*.spec.js -R spec --bail",
     "test-raw": "mocha --debug --reporter spec --require test/setupBrowser.js --recursive dist/test",
     "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --debug --reporter spec --require test/setupBrowser.js --recursive dist/test",
-    "test": "npm run build && npm run --silent test-cov",
-    "prepublish": "typings install && npm run build",
+    "test": "npm run build-ts && npm run --silent test-cov",
+    "prepublish": "typings install && npm run build-ts",
     "devServer": "npm run build-background-watch & beefy --live --index ./tools/devServer/public/index.html dist/tools/devServer/main.js:bundle.js",
     "storybook": "start-storybook -p 9001 -s ./styles/bootstrap/dist"
   },
@@ -38,7 +38,6 @@
     "react-dom": "0.14.x"
   },
   "dependencies": {
-    "bootstrap": "file:styles/bootstrap",
     "react-bootstrap": "^0.28.4",
     "source-map-support": "^0.4.0",
     "underscore": "^1.8.3"
@@ -49,6 +48,7 @@
     "chai": "^3.5.0",
     "css-loader": "^0.23.1",
     "enzyme": "^2.2.0",
+    "i": "^0.3.4",
     "istanbul": "^0.4.2",
     "jsdom": "^8.2.0",
     "live-server": "^0.9.2",
