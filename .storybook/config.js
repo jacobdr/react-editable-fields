@@ -1,6 +1,7 @@
 import { configure } from '@kadira/storybook';
-const req = require.context('../tools', true, /story\.js$/)
+import '../styles/bootstrap.min.css'
 
+const req = require.context('../tools', true, /story\.[jt]sx?$/)
 function loadStories() {
   req.keys().forEach(req)
 }
