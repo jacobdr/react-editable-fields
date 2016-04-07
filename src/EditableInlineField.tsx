@@ -30,8 +30,7 @@ export class EditableInlineField extends React.Component<EditableFieldPropTypes,
     constructor(props: any) {
         super(props);
         this.state = {
-            initialValue: this.props.initialValue,
-            userTextInput: null,
+            userTextInput: this.props.initialValue,
             textEnteredSinceFocus: false,
             textEnteredNotSaved: false,
             textInputCurrentlyFocused: false,
@@ -39,16 +38,50 @@ export class EditableInlineField extends React.Component<EditableFieldPropTypes,
         };
     }
 
-    componentDidMount() { }
+    componentDidMount() {}
 
-    submit(event: any) {
+    submit(event: any) {}
+
+    userClickOutsideInput = (event:React.SyntheticEvent) => {
+        this.setState({
+            textInputCurrentlyFocused: false,
+            inputCurrentlyVisible: false
+        });
+    }
+
+    handleChangeToInput = (event:any) => {
+        switch (typeof event.target.value) {
+            case 'string':
+                this.setState({
+                    userTextInput: event.target.value.trim(),
+                    textEnteredSinceFocus:true,
+                    textEnteredNotSaved: true,
+                });
+            default:
+                this.setState({
+                    userTextInput: event.target.value,
+                    textEnteredSinceFocus:true,
+                    textEnteredNotSaved: true,
+                });
+        }
     }
 
     cancel = (event: React.SyntheticEvent) => {
+        this.userClickOutsideInput(event);
         this.setState({
-            userTextInput: null,
+            userTextInput: this.props.initialValue,
             textEnteredNotSaved: false,
-        })
+        });
+    };
+
+    saveUserInput = (event: React.SyntheticEvent) => {
+        this.setState({
+            textInputCurrentlyFocused: false,
+            inputCurrentlyVisible: false,
+            textEnteredSinceFocus:false,
+            textEnteredNotSaved: false,
+        });
+        this.props.saveHandler(this.state.userTextInput)
     }
 
     render() {
@@ -57,86 +90,47 @@ export class EditableInlineField extends React.Component<EditableFieldPropTypes,
                 <Button
                     bsStyle='primary'
                     className='btn-sm'
-                    onClick={null}
+                    onClick={this.saveUserInput}
                 >
-                    <i block className='glyphicon glyphicon-ok'></i> Save
+                    <i block className='glyphicon glyphicon-ok'></i>
                 </Button>
                 <Button
                     bsStyle='default'
                     className='btn-sm'
                     onClick={this.cancel}
                 >
-                    <i block className='glyphicon glyphicon-remove'></i> Cancel
+                    <i block className='glyphicon glyphicon-remove'></i>
                 </Button>
             </ButtonGroup>
         );
-        // {confirmationButtonGroup}
+
+        let unsavedDataWarning = (
+            <span id="helpBlock2"><span className={"has-warning"}>
+                <span className={"help-block"} >
+                    Unsaved changes since last edit
+                </span>
+            </span></span>
+        );
+
         let inputFormAndButtonWrapper = (
-            // <Grid>
-            //     <Row>
-            //         <Col xs={6} md={6}>
-            //             <Input
-            //                 inline
-            //                 autoFocus
-            //                 standalone
-            //                 type="text"
-            //                 value={this.state.userTextInput || this.props.initialValue}
-            //                 placeholder="Empty"
-            //                 onChange={(e: any) => { this.setState({ userTextInput: e.target.value }) } }
-            //                 onBlur={()=>{this.setState({inputCurrentlyVisible:true})}}
-            //             />
-            //         </Col>
-            //         <Col xs={6} md={6}>
-            //             <ButtonGroup justified>
-            //                 <Button
-            //                     bsStyle='primary'
-            //                     className='btn-sm'
-            //                     onClick={null}
-            //                 >
-            //                     <i block className='glyphicon glyphicon-ok'></i>
-            //                 </Button>
-            //                 <Button
-            //                     bsStyle='default'
-            //                     className='btn-sm'
-            //                     onClick={this.cancel}
-            //                 >
-            //                     <i block className='glyphicon glyphicon-remove'></i>
-            //                 </Button>
-            //             </ButtonGroup>
-            //         </Col>
-            //     </Row>
-            // </Grid>);
-            <div className="clearfix">
-                <input
-                    inline
-                    autoFocus
-                    standalone
-                    type="text"
-                    value={this.state.userTextInput || this.props.initialValue}
-                    placeholder="Empty"
-                    onChange={(e: any) => { this.setState({ userTextInput: e.target.value }) } }
-                    onBlur={()=>{this.setState({inputCurrentlyVisible:true})}}
-                    className="pull-left"
-                />
-                    <Button
-                        bsStyle='primary'
-                        className='btn-sm pull-left'
-                        onClick={null}
-                    >
-                        <i block className='glyphicon glyphicon-ok'></i>
-                    </Button>
-                    <Button
-                        bsStyle='default'
-                        className='btn-sm pull-left'
-                        onClick={this.cancel}
-                    >
-                        <i block className='glyphicon glyphicon-remove'></i>
-                    </Button>
-            </div>
+            <ButtonToolbar>
+                <ButtonGroup>
+                    <input
+                        autoFocus
+                        className={"input-block-level"}
+                        type="text"
+                        value={this.state.userTextInput}
+                        placeholder="Empty"
+                        onChange={this.handleChangeToInput}
+                        aria-describedby="helpBlock2"
+                    />
+                </ButtonGroup>
+                {confirmationButtonGroup}
+            </ButtonToolbar>
         );
 
         let linkToInputFieldEntry = (
-            <ButtonGroup className='editable-buttons'>
+            <div>
                 <Button
                     ref='anchorLinkInputGateway'
                     style={{ borderBottom: "1px dotted #000" }}
@@ -145,36 +139,20 @@ export class EditableInlineField extends React.Component<EditableFieldPropTypes,
                 >
                     {this.props.initialValue}
                 </Button>
-            </ButtonGroup>
+            </div>
         );
 
-        let combinedButtonToolbar = (
+        return (
             <div>
                 {(() => {
-                    switch(true){
-                    // switch(this.state.inputCurrentlyVisible){
+                    switch(this.state.inputCurrentlyVisible){
                         case false: return linkToInputFieldEntry
                         case true: return inputFormAndButtonWrapper
                         default: return null
                     }
                 })()}
+                {(()=> {if(this.state.textEnteredNotSaved) return unsavedDataWarning })()}
             </div>
-        );
-
-        let userInputTextBox = (
-            <Input
-                ref={(c: any) => { c && c.getInputDOMNode && c.getInputDOMNode().focus() } }
-                type='text'
-                placeholder={'Empty'}
-                value={null}
-                className='input-sm'
-                onChange={null}
-                onBlur={null}
-                help="Validation is based on string length."
-                bsStyle={"warning"}
-                />
-        );
-
-        return combinedButtonToolbar
+        )
     }
 }
