@@ -7,7 +7,7 @@
   "scripts": {
     "no-build": "npm install && npm run build-ts",
     "postinstall": "npm run build-ts",
-    "build-ts": "rm -rf dist/* && $(npm bin)/tsc --pretty",
+    "build-ts": "rm -rf dist/* && npm i --production && $(npm bin)/tsc --pretty",
     "build-background-watch": "$(npm bin)/tsc --watch --pretty",
     "test-watch": "npm run build-background-watch & $(npm bin)/mocha --watch --reporter spec --require test/setupBrowser.js dist/**.js",
     "test-spec": "$(npm bin)/mocha dist/**/*.spec.js -R spec --bail",
