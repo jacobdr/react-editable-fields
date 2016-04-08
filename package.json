@@ -14,7 +14,7 @@
     "test-raw": "$(npm bin)/mocha --debug --reporter spec --require test/setupBrowser.js --recursive dist/test",
     "test-cov": "$(npm bin)/istanbul cover node_modules/mocha/bin/_mocha -- --debug --reporter spec --require test/setupBrowser.js --recursive dist/test",
     "test": "npm run build-ts && npm run --silent test-cov",
-    "prepublish": "$(npm bin)/typings install && npm run build-ts",
+    "oldPrepublishScript": "$(npm bin)/typings install && npm run build-ts",
     "devServer": "npm run build-background-watch & $(npm bin)/beefy --live --index ./tools/devServer/public/index.html dist/tools/devServer/main.js:bundle.js",
     "storybook": "$(npm bin)/start-storybook -p 9001 -s ./styles/bootstrap/dist"
   },
