@@ -5,7 +5,7 @@
   "main": "./dist/src/index.js",
   "typings": "./dist/src/index.d.ts",
   "scripts": {
-    "build": "npm run build-ts",
+    "no-build": "npm install && npm run build-ts",
     "postinstall": "npm run build-ts",
     "build-ts": "rm -rf dist/* && $(npm bin)/tsc --pretty",
     "build-background-watch": "$(npm bin)/tsc --watch --pretty",
